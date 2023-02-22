@@ -11,8 +11,7 @@ namespace Mission6_ev244.Models
         [Key]
         [Required]
         public int MovieId { get; set; }
-        [Required]
-        public string Category { get; set; }
+       
         [Required]
         public string Title { get; set; }
         [Required]
@@ -27,5 +26,11 @@ namespace Mission6_ev244.Models
 
         [StringLength(25, ErrorMessage = "Message can be no longer than 25 characters")]
         public string Notes { get; set; }
+
+        // Foreign Key Relationship
+        [Required]
+        public int CategoryID { get; set; }
+        public Category Category { get; set; }
+
     }
 }

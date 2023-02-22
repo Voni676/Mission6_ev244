@@ -8,7 +8,7 @@ using Mission6_ev244.Models;
 namespace Mission6_ev244.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20230214024432_Initial")]
+    [Migration("20230222001951_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,9 +23,8 @@ namespace Mission6_ev244.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -54,13 +53,15 @@ namespace Mission6_ev244.Migrations
 
                     b.HasKey("MovieId");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("responses");
 
                     b.HasData(
                         new
                         {
                             MovieId = 1,
-                            Category = "Action",
+                            CategoryID = 1,
                             Director = "Brian De Palma",
                             Edited = true,
                             Lent_To = "Siko",
@@ -72,7 +73,7 @@ namespace Mission6_ev244.Migrations
                         new
                         {
                             MovieId = 2,
-                            Category = "Action",
+                            CategoryID = 1,
                             Director = "John Woo",
                             Edited = false,
                             Lent_To = "Toko",
@@ -84,7 +85,7 @@ namespace Mission6_ev244.Migrations
                         new
                         {
                             MovieId = 3,
-                            Category = "Action",
+                            CategoryID = 1,
                             Director = "J. J. Abrams",
                             Edited = false,
                             Lent_To = "Loho",
@@ -93,6 +94,56 @@ namespace Mission6_ev244.Migrations
                             Title = "Mission Impossible 3",
                             Year = 2006
                         });
+                });
+
+            modelBuilder.Entity("Mission6_ev244.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Action"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Romantic"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Horror"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "Adventure"
+                        });
+                });
+
+            modelBuilder.Entity("Mission6_ev244.Models.ApplicationResponse", b =>
+                {
+                    b.HasOne("Mission6_ev244.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
